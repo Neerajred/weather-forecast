@@ -39,7 +39,6 @@ const CityTable = () => {
     // eslint-disable-next-line
   }, [limit]);
 
-  // Handle search input and filter cities based on the input
   const handleSearchChange = async (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -62,7 +61,6 @@ const CityTable = () => {
 
 
 
-  // Infinite scroll implementation using IntersectionObserver
   const loadMoreCities = (entries) => {
     const [entry] = entries;
     if (entry.isIntersecting && !searchTerm) {
@@ -126,8 +124,9 @@ const CityTable = () => {
                 {filteredCities.map((city, index) => (
                   <tr
                     key={index}
-                    className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                      } hover:bg-blue-100 transition-all duration-200 ease-in-out`}
+                    className={`${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                    } hover:bg-blue-100 transition-all duration-200 ease-in-out`}
                   >
                     <td className="py-3 px-5 border-b">
                       <Link
@@ -145,7 +144,10 @@ const CityTable = () => {
             </table>
           </div>
 
-          {!searchTerm && (<Loader />
+          {!searchTerm && (
+            <div ref={observer} className="h-12 flex justify-center items-center">
+              <p className="text-gray-500">Loading more cities...</p>
+            </div>
           )}
           {loading && <Loader />}
         </>
