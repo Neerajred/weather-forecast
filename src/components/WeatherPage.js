@@ -22,9 +22,8 @@ const WeatherPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const apiKey = "e211664780beb1f7cdada25b4c488ae7"; // Replace with your OpenWeatherMap API key
+  const apiKey = "e211664780beb1f7cdada25b4c488ae7";
 
-  // Fetch 5-day forecast data
   useEffect(() => {
     const fetchForecast = async () => {
       try {
@@ -33,7 +32,7 @@ const WeatherPage = () => {
           `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
         );
         const data = await response.json();
-        setForecastData(data.list); // Save forecast data
+        setForecastData(data.list); 
       } catch (err) {
         setError(err);
       } finally {
@@ -47,19 +46,18 @@ const WeatherPage = () => {
   if (loading) return <Loader />;
   if (error) return <p>Error fetching forecast data: {error.message}</p>;
 
-  // Helper function to group forecast data by day
   const getDailyForecast = () => {
     const groupedForecast = {};
 
     forecastData.forEach((entry) => {
-      const date = dayjs(entry.dt_txt).format("YYYY-MM-DD"); // Group by date
+      const date = dayjs(entry.dt_txt).format("YYYY-MM-DD"); 
       if (!groupedForecast[date]) {
         groupedForecast[date] = [];
       }
       groupedForecast[date].push(entry);
     });
 
-    return Object.entries(groupedForecast).slice(0, 5); // Get only 5 days
+    return Object.entries(groupedForecast).slice(0, 5);
   };
 
   const dailyForecast = getDailyForecast();
@@ -68,7 +66,7 @@ const WeatherPage = () => {
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-200 p-4">
       <div className="relative max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Back Button with Left Arrow */}
+        
         <button
           onClick={() => navigate(-1)}
           className="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white p-2 rounded-full"
@@ -82,12 +80,11 @@ const WeatherPage = () => {
               5-Day Weather Forecast {city}
             </h1>
 
-            {/* Display daily forecast cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {dailyForecast.map(([date, entries], index) => {
                 const middayEntry = entries.find((entry) =>
                   entry.dt_txt.includes("12:00:00")
-                ); // Choose midday for a better summary
+                );
                 const weatherIconCode = middayEntry?.weather[0]?.icon;
                 const weatherDescription = middayEntry?.weather[0]?.description;
                 const temp = middayEntry?.main?.temp;
@@ -118,7 +115,6 @@ const WeatherPage = () => {
           </div>
         </div>
 
-        {/* Map section */}
         <div className="w-full h-64 lg:h-80 mt-6">
           <MapContainer
             center={[lat, lon]}
